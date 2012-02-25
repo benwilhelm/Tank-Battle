@@ -6,6 +6,7 @@
     
     <script type="text/javascript" src='js/jquery-1.7.1.min.js' ></script>
     <script type="text/javascript" src='js/jquery-ui-1.8.17.custom.min.js' ></script>
+    <script type="text/javascript" src='js/hexgrid.js' ></script>
     <script type="text/javascript" src='js/js.js' ></script>
 	</head>
 	<body>
@@ -23,14 +24,16 @@
     	<?php for ($c=1; $c<=10; $c++) : ?>
     	
     	 <?php // determine hex classes
-    	   $col = $row % 2 ? $c*2 : ($c*2)-1 ;
+    	   $col = $row % 2 ? ($c*2)-1 : $c*2 ;
     	   $hexClass = "hex row-$row col-{$col} " ; 
-    	   $hexClass .= $row % 2 ? 'alt ' : '' ;
+    	   $hexClass .= $row % 2 ? '' : 'alt' ;
+    	   $terrain = rand(1,3) ;
     	 ?>
     	
-    	 <div id='hex_<?php echo $row ?>_<?php echo $col ?>' class="<?php echo $hexClass ?>" data-col='<?php echo $col ?>' data-row='<?php echo $row ?>'>
+    	 <div id='hex_<?php echo $col ?>_<?php echo $row ?>' class="<?php echo $hexClass ?>" data-col='<?php echo $col ?>' data-row='<?php echo $row ?>' data-terrain='<?php echo $terrain ?>'>
     	   <div class="rect">
-    	     <?php echo "{$row}/{$col}" ?>
+    	     <p class="coords"><?php echo "{$col}/{$row}" ?></p>
+    	     <p class="terrain"><?php echo $terrain ?></p>
     	   </div>
     	   <div class="tri top left"></div>
     	   <div class="tri top right"></div>

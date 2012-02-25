@@ -1,4 +1,7 @@
 $(document).ready(function(){
+
+  var the_grid = hexGrid.init(20,30) ;
+
   var pointsRemaining = 20 ;
   $('#points_remaining span').html(pointsRemaining) ;
   
@@ -31,8 +34,9 @@ $(document).ready(function(){
         }
       }      
     }
-  }).click(function(){
-    $(this).showAvailableMoves({distance:10}) ;
+  }).click(function(e){
+    e.preventDefault() ;
+    $(this).showAttackRadius({distance:10}) ;
   }) ;
   
   $('.hex').droppable({
@@ -42,12 +46,26 @@ $(document).ready(function(){
       $(this).find('.rect').append(ui.draggable) ;
       ui.draggable.css({top:0,left:0}) ;
     }
-  }) ;  
+  }) ; 
+  
+  $('.hex').click(function(e){
+    e.preventDefault() ;
+    $('.highlight').removeClass('highlight') ;
+    spc = $(this).getThisSpace() ;
+    var neighbors = hexGrid.getNeighbors(spc) ;
+    var sel = String() ;
+    for (i=0; i<neighbors.length; i++) {
+      var s = neighbors[i] ;
+      sel = '#hex_' + s[0] + '_' + s[1] ;
+      console.log(sel) ;
+      $(sel).addClass('highlight') ;
+    }
+  }) ; 
 }) ;
 
 
 (function($) {
-  jQuery.fn.showAvailableMoves = function(options) {
+  jQuery.fn.showAttackRadius = function(options) {
     
     $('.can-move').removeClass('can-move') ;
     var defaults = { distance:5 }
@@ -73,11 +91,11 @@ $(document).ready(function(){
             
             if ( rabs >= cabs ) {
               if ((rabs+cabs)/2 <= dist) {
-                sel.push(".hex.col-" + the_col + ".row-" + the_row) ;
+                sel.push("#hex_" + the_col + "_" + the_row) ;
               } 
             } else {
               if (rabs <= dist) {
-                sel.push(".hex.col-" + the_col + ".row-" + the_row) ;
+                sel.push("#hex_" + the_col + "_" + the_row) ;
               }
             }
           }
@@ -99,17 +117,20 @@ $(document).ready(function(){
     
     var r = $(this).closest('.hex').attr('data-row') ;
     var c = $(this).closest('.hex').attr('data-col') ;
+    var trn = $(this).closest('.hex').attr('data-terrain') ;
     
     if (r && c) {
 
       var r = parseInt(r) ;
       var c = parseInt(c) ;
       
-      var space = {row: r, col: c} ;
+      var space = {col: c, row: r, terrain: trn} ;
       return space ;
       
     } else {
       return false ;
     }
   }
+  
 })( jQuery ) ;
+

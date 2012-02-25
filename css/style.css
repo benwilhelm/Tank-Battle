@@ -15,6 +15,8 @@
 .hex .tri { position: absolute ; height : 0 ; width : 0 ; border-style: solid ; border-bottom-color: #CCC ; border-top-color: #CCC ; border-left-color: transparent ; border-right-color: transparent ; }
 
 .hex .rect { width : 25px ; font-size: x-small; height : 43px ; position: absolute ; left : 13px ; top : 0 ; background-color: #ccc ; }
+  .hex .rect p { margin: 0 ; }
+  .hex .rect p.terrain { bottom: 0; position: absolute; }
 
 .hex .top.left { top : 0 ; left : 0 ; border-width: 0 0 22px 13px ; }
   .hex.drop-hover .top.left { border-bottom-color: #666; }
@@ -44,6 +46,12 @@
   .hex.can-move .top.right { border-bottom-color: #696; }
   .hex.can-move .bottom.left { border-top-color: #696; }
   .hex.can-move .bottom.right { border-top-color: #696; }
+
+.hex.highlight .rect { background-color: #FF8 ; }
+  .hex.highlight .top.left { border-bottom-color: #FF8; }
+  .hex.highlight .top.right { border-bottom-color: #FF8; }
+  .hex.highlight .bottom.left { border-top-color: #FF8; }
+  .hex.highlight .bottom.right { border-top-color: #FF8; }
 
 
 /* =Info Pane
