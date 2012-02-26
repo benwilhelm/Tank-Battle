@@ -41,11 +41,11 @@
 .pc { background-color: blue ; border-radius: 5px ; color: white ; cursor: pointer ; float: left ; font-weight: bold ; height: 20px ; text-align: center ; width : 25px; z-index: 1000 ; }
 
 
-.hex[data-terrain='4'] .rect { background-color: #666 ; }
-  .hex[data-terrain='4'] .top.left { border-bottom-color: #666; }
-  .hex[data-terrain='4'] .top.right { border-bottom-color: #666; }
-  .hex[data-terrain='4'] .bottom.left { border-top-color: #666; }
-  .hex[data-terrain='4'] .bottom.right { border-top-color: #666; }
+.hex[data-terrain='4'] .rect { background-color: #966 ; }
+  .hex[data-terrain='4'] .top.left { border-bottom-color: #966; }
+  .hex[data-terrain='4'] .top.right { border-bottom-color: #966; }
+  .hex[data-terrain='4'] .bottom.left { border-top-color: #966; }
+  .hex[data-terrain='4'] .bottom.right { border-top-color: #966; }
 
 .hex.can-move .rect { background-color: #696 ; }
   .hex.can-move .top.left { border-bottom-color: #696; }
