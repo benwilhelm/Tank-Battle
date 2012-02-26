@@ -24,10 +24,14 @@
     	<?php for ($c=1; $c<=10; $c++) : ?>
     	
     	 <?php // determine hex classes
+    	   $terrainMap = array(5 => array(21=>4,23=>4,25=>4,27=>4)) ;
     	   $col = $row % 2 ? ($c*2)-1 : $c*2 ;
-    	   $hexClass = "hex row-$row col-{$col} " ; 
+    	   $hexClass = "hex row-{$row} col-{$col} " ; 
     	   $hexClass .= $row % 2 ? '' : 'alt' ;
-    	   $terrain = rand(1,3) ;
+    	   $terrain = $terrainMap[$col][$row] ? $terrainMap[$col][$row] : 1 ;
+    	   
+    	   
+    	   //$terrain = rand(1,3) ;
     	 ?>
     	
     	 <div id='hex_<?php echo $col ?>_<?php echo $row ?>' class="<?php echo $hexClass ?>" data-col='<?php echo $col ?>' data-row='<?php echo $row ?>' data-terrain='<?php echo $terrain ?>'>

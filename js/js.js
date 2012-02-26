@@ -1,6 +1,7 @@
 $(document).ready(function(){
 
-  var the_grid = hexGrid.init(20,30) ;
+  hexGrid.init(20,30) ;
+  //hexGrid.logGrid() ;
 
   var pointsRemaining = 20 ;
   $('#points_remaining span').html(pointsRemaining) ;
@@ -10,6 +11,8 @@ $(document).ready(function(){
     revertDuration: 500 ,
     start: function (event,ui) {
       var sp = $(this).getThisSpace() ;
+      $('.pc.active').removeClass('active') ;
+      $(this).addClass('active') ;
       $.data(this, 'start_space', sp) ;
     } ,
     stop: function (event,ui) {
@@ -20,18 +23,28 @@ $(document).ready(function(){
       var end = $.data(this, 'end_space') ;
 
       if (start && end) {
-        var row_dist = Math.abs(start.row - end.row) ;
-        var col_dist = Math.abs(start.col - end.col) ;
-        var pts_used = col_dist > row_dist ? col_dist : (row_dist + col_dist) / 2;
-        
+        $('.highlight').removeClass('highlight') ;
+        var path = hexGrid.astar(start,end) ;
+        var pts_used = hexGrid.lastmove ;
         if (pts_used <= pointsRemaining) {
+
+          // higlight path
+          for (i=0;i<path.length;i++) {
+            var hx = path[i] ;
+            var c = hx.posHex.col ;
+            var r = hx.posHex.row ;
+            var sel = "#hex_" + c + '_' + r ;
+            $(sel).addClass('highlight') ;
+          }
+          
+          // update and display remaining points
           pointsRemaining -= pts_used ;
           $('#points_remaining span').html(pointsRemaining) ;
           $('#points_used span').html(pts_used) ;
         } else {
-          var str = "#hex_" + start.row + '_' + start.col + ' .rect' ;
+          var str = "#hex_" + start.col + '_' + start.row + ' .rect' ;
           $(str).append(this) ;
-        }
+        }        
       }      
     }
   }).click(function(e){
@@ -57,7 +70,6 @@ $(document).ready(function(){
     for (i=0; i<neighbors.length; i++) {
       var s = neighbors[i] ;
       sel = '#hex_' + s[0] + '_' + s[1] ;
-      console.log(sel) ;
       $(sel).addClass('highlight') ;
     }
   }) ; 
