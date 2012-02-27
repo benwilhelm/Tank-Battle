@@ -6,7 +6,9 @@
     
     <script type="text/javascript" src='js/jquery-1.7.1.min.js' ></script>
     <script type="text/javascript" src='js/jquery-ui-1.8.17.custom.min.js' ></script>
-    <script type="text/javascript" src='js/hexgrid.js' ></script>
+    <script type="text/javascript" src='js/objects/hexgrid.js' ></script>
+    <script type="text/javascript" src='js/objects/turn.js' ></script>
+    <script type="text/javascript" src='js/plugins/gamepiece.js' ></script>
     <script type="text/javascript" src='js/js.js' ></script>
 	</head>
 	<body>

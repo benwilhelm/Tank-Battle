@@ -163,32 +163,32 @@ hexGrid = {
 
     var xy = this.getXY(c,r+2) ;
     if (grid[xy[0]] && grid[xy[0]][xy[1]]) {
-      neighbors.push(grid[c][r+2]) ;
+      neighbors.push(grid[xy[0]][xy[1]]) ;
     }
 
     xy = this.getXY(c,r-2) ;
     if (grid[xy[0]] && grid[xy[0]][xy[1]]) {
-      neighbors.push(grid[c][r-2]) ;
+      neighbors.push(grid[xy[0]][xy[1]]) ;
     }
   
     xy = this.getXY(c-1,r-1) ;
     if (grid[xy[0]] && grid[xy[0]][xy[1]]) {
-      neighbors.push(grid[c-1][r-1]) ;
+      neighbors.push(grid[xy[0]][xy[1]]) ;
     }
   
     xy = this.getXY(c+1,r-1) ;
     if (grid[xy[0]] && grid[xy[0]][xy[1]]) {
-      neighbors.push(grid[c+1][r-1]) ;
+      neighbors.push(grid[xy[0]][xy[1]]) ;
     }
   
     xy = this.getXY(c-1,r+1) ;
     if (grid[xy[0]] && grid[xy[0]][xy[1]]) {
-      neighbors.push(grid[c-1][r+1]) ;
+      neighbors.push(grid[xy[0]][xy[1]]) ;
     }
   
     xy = this.getXY(c+1,r+1) ;
     if (grid[xy[0]] && grid[xy[0]][xy[1]]) {
-      neighbors.push(grid[c+1][r+1]) ;
+      neighbors.push(grid[xy[0]][xy[1]]) ;
     }
 
     return neighbors ;
@@ -317,6 +317,16 @@ hexGrid = {
  
 		// No result was found -- empty array signifies failure to find path
 		return [];
+	}, 
+	
+	highlightPath: function(path) {
+    for (i=0;i<path.length;i++) {
+      var hx = path[i] ;
+      var c = hx.posHex.col ;
+      var r = hx.posHex.row ;
+      var sel = "#hex_" + c + '_' + r ;
+      $(sel).addClass('highlight') ;
+    }	
 	}
   
 }

@@ -63,9 +63,8 @@
 /* =Info Pane
 ========================================*/
 
-#info_pane { box-shadow: 0 0 5px #666 ; float: right; padding: 20px; width : 340px ;}
-
-#points_remaining { font-size: xx-large ; }
+#info_pane { float: left; padding: 20px; }
+#points_remaining { font-size: large ; font-weight: bold; }
 
 
 
