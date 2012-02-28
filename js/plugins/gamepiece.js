@@ -16,16 +16,12 @@
           revertDuration: 500 ,
           start: function (event,ui) {
             var sp = $(this).gamePiece('getThisSpace') ;
-            console.log('start') ;
-            console.log(sp) ;
             $('.pc.active').removeClass('active') ;
             $(this).addClass('active') ;
             $.data(this, 'start_space', sp) ;
           } ,
           stop: function (event,ui) {
             var sp = $(this).gamePiece('getThisSpace') ;
-            console.log('end') ;
-            console.log(sp) ;
             $.data(this, 'end_space', sp) ;
             
             var start = $.data(this, 'start_space') ;
@@ -53,14 +49,10 @@
     }, 
     
     showAttackRadius: function(radius) {
-      console.log('rd ' + radius) ;
       var dist = radius ;
-      console.log('called showAttackRadius') ;
       $('.can-move').removeClass('can-move') ;
       
       return this.each(function(){
-        console.log('iterated') ;
-        console.log('radius: ' + dist) ;
         var $this = $(this) ;
         
         //var dist = parseInt($this.attackRadius) ;
@@ -109,7 +101,6 @@
       var trn = $(this).closest('.hex').attr('data-terrain') ;
       
       if (r && c) {
-        console.log('r and c') ;    
         var r = parseInt(r) ;
         var c = parseInt(c) ;
         
