@@ -83,12 +83,11 @@
             }
           }
           var selector = sel.join(',') ;
-          $(selector).addClass('can-move') ;
-          
-  //        .delay(1000).queue(function(next){
-  //          $(this).removeClass('can-move') ;
-  //          next() ;
-  //        }) ;
+          $(selector).addClass('show-attack')
+                     .delay(1000).queue(function(next){
+                        $(this).removeClass('show-attack') ;
+                        next() ;
+                      }) ;
         }
       }) ;
     

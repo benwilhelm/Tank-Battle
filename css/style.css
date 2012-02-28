@@ -59,11 +59,11 @@
   .hex[data-terrain='4'] .bottom.left { border-top-color: #956; }
   .hex[data-terrain='4'] .bottom.right { border-top-color: #956; }
 
-.hex.can-move .rect { background-color: #696 ; }
-  .hex.can-move .top.left { border-bottom-color: #696; }
-  .hex.can-move .top.right { border-bottom-color: #696; }
-  .hex.can-move .bottom.left { border-top-color: #696; }
-  .hex.can-move .bottom.right { border-top-color: #696; }
+.hex.show-attack .rect { background-color: #A00 ; }
+  .hex.show-attack .top.left { border-bottom-color: #A00; }
+  .hex.show-attack .top.right { border-bottom-color: #A00; }
+  .hex.show-attack .bottom.left { border-top-color: #A00; }
+  .hex.show-attack .bottom.right { border-top-color: #A00; }
 
 .hex.highlight .rect { background-color: #FF8 ; }
   .hex.highlight .top.left { border-bottom-color: #FF8; }
