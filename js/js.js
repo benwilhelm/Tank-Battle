@@ -5,14 +5,7 @@ $(document).ready(function(){
   
   $('.pc').gamePiece({attackRadius:5}) ;
   
-  $('.hex').droppable({
-    accept: '.pc' ,
-    hoverClass: 'drop-hover',
-    drop: function(event,ui) {
-      $(this).find('.rect').append(ui.draggable) ;
-      ui.draggable.css({top:0,left:0}) ;
-    }
-  }) ; 
+  $('.hex').gameSpace() ; 
   
 }) ;
 

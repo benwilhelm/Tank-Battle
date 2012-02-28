@@ -9,6 +9,7 @@
     <script type="text/javascript" src='js/objects/hexgrid.js' ></script>
     <script type="text/javascript" src='js/objects/turn.js' ></script>
     <script type="text/javascript" src='js/plugins/gamepiece.js' ></script>
+    <script type="text/javascript" src='js/plugins/gamespace.js' ></script>
     <script type="text/javascript" src='js/js.js' ></script>
 	</head>
 	<body>
