@@ -12,11 +12,11 @@
   
 .hex.col-19, .hex.col-20 { margin-right: 0 ;}
 
-.hex .tri { position: absolute ; height : 0 ; width : 0 ; border-style: solid ; border-bottom-color: #CCC ; border-top-color: #CCC ; border-left-color: transparent ; border-right-color: transparent ; }
+.hex .tri { position: absolute ; height : 0 ; width : 0 ; border-style: solid ; border-bottom-color: #D0D0D0 ; border-top-color: #D0D0D0 ; border-left-color: transparent ; border-right-color: transparent ; }
 
-.hex .rect { width : 25px ; font-size: x-small; height : 43px ; position: absolute ; left : 13px ; top : 0 ; background-color: #ccc ; }
+.hex .rect { width : 25px ; font-size: x-small; height : 43px ; position: absolute ; left : 13px ; top : 0 ; background-color: #D0D0D0 ; }
   .hex .rect p { margin: 0 ; }
-  .hex .rect p.terrain { bottom: 0; position: absolute; }
+  .hex .rect p.elevation { bottom: 0; position: absolute; }
 
 .hex .top.left { top : 0 ; left : 0 ; border-width: 0 0 22px 13px ; }
   .hex.drop-hover .top.left { border-bottom-color: #666; }
@@ -39,25 +39,25 @@
 .hex .rect .pc { font-size: medium ; margin-top: 0; }
 
 .pc { background-color: blue ; border-radius: 5px ; color: white ; cursor: pointer ; float: left ; font-weight: bold ; height: 20px ; text-align: center ; width : 25px; z-index: 1000 ; }
+  .pc.active { background-color:red ;}
 
+.hex[data-elevation='2'] .rect { background-color: #AAA ; }
+  .hex[data-elevation='2'] .top.left { border-bottom-color: #AAA; }
+  .hex[data-elevation='2'] .top.right { border-bottom-color: #AAA; }
+  .hex[data-elevation='2'] .bottom.left { border-top-color: #AAA; }
+  .hex[data-elevation='2'] .bottom.right { border-top-color: #AAA; }
 
-.hex[data-terrain='2'] .rect { background-color: #996 ; }
-  .hex[data-terrain='2'] .top.left { border-bottom-color: #996; }
-  .hex[data-terrain='2'] .top.right { border-bottom-color: #996; }
-  .hex[data-terrain='2'] .bottom.left { border-top-color: #996; }
-  .hex[data-terrain='2'] .bottom.right { border-top-color: #996; }
+.hex[data-elevation='3'] .rect { background-color: #888 ; }
+  .hex[data-elevation='3'] .top.left { border-bottom-color: #888; }
+  .hex[data-elevation='3'] .top.right { border-bottom-color: #888; }
+  .hex[data-elevation='3'] .bottom.left { border-top-color: #888; }
+  .hex[data-elevation='3'] .bottom.right { border-top-color: #888; }
 
-.hex[data-terrain='3'] .rect { background-color: #976 ; }
-  .hex[data-terrain='3'] .top.left { border-bottom-color: #976; }
-  .hex[data-terrain='3'] .top.right { border-bottom-color: #976; }
-  .hex[data-terrain='3'] .bottom.left { border-top-color: #976; }
-  .hex[data-terrain='3'] .bottom.right { border-top-color: #976; }
-
-.hex[data-terrain='4'] .rect { background-color: #956 ; }
-  .hex[data-terrain='4'] .top.left { border-bottom-color: #956; }
-  .hex[data-terrain='4'] .top.right { border-bottom-color: #956; }
-  .hex[data-terrain='4'] .bottom.left { border-top-color: #956; }
-  .hex[data-terrain='4'] .bottom.right { border-top-color: #956; }
+.hex[data-elevation='4'] .rect { background-color: #666 ; }
+  .hex[data-elevation='4'] .top.left { border-bottom-color: #666; }
+  .hex[data-elevation='4'] .top.right { border-bottom-color: #666; }
+  .hex[data-elevation='4'] .bottom.left { border-top-color: #666; }
+  .hex[data-elevation='4'] .bottom.right { border-top-color: #666; }
 
 .hex.show-attack .rect { background-color: #A00 ; }
   .hex.show-attack .top.left { border-bottom-color: #A00; }

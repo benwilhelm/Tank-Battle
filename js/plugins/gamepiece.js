@@ -15,17 +15,14 @@
           revert: 'invalid' ,
           revertDuration: 500 ,
           start: function (event,ui) {
-            var sp = $(this).gamePiece('getThisSpace') ;
+            var sp = $(this).gamePiece('getGridSpace') ;
             $('.pc.active').removeClass('active') ;
             $(this).addClass('active') ;
             $.data(this, 'start_space', sp) ;
           } ,
           stop: function (event,ui) {
-            var sp = $(this).gamePiece('getThisSpace') ;
-            $.data(this, 'end_space', sp) ;
-            
+            var end = $(this).gamePiece('getGridSpace') ;
             var start = $.data(this, 'start_space') ;
-            var end = $.data(this, 'end_space') ;
       
             if (start && end) {
               $('.highlight').removeClass('highlight') ;
@@ -34,16 +31,17 @@
                 hexGrid.highlightPath(path) ;
                 turn.updateDisplay() ;
               } else {
+                // not enough points to move, return to original space
                 var str = "#hex_" + start.col + '_' + start.row + ' .rect' ;
                 $(str).append(this) ;
               }        
             }      
+            $(this).gamePiece('activate') ;
           }
         }) ;
         
         $this.click(function(){
-          var radius = $(this).data('attackRadius') ;
-          $(this).gamePiece('showAttackRadius',radius) ;
+          var radius = $(this).gamePiece('activate') ;
         }) ;
       }) ;
     }, 
@@ -93,23 +91,30 @@
     
     },
     
-    getThisSpace: function() {
+    getGridSpace: function() {
         
-      var r = $(this).closest('.hex').attr('data-row') ;
       var c = $(this).closest('.hex').attr('data-col') ;
-      var trn = $(this).closest('.hex').attr('data-terrain') ;
+      var r = $(this).closest('.hex').attr('data-row') ;
       
-      if (r && c) {
-        var r = parseInt(r) ;
+      if (c && r) {
         var c = parseInt(c) ;
+        var r = parseInt(r) ;
         
-        var space = {col: c, row: r, terrain: trn} ;
+        var space = hexGrid.getGridSpace(hexGrid.getXY(c,r)) ;
         return space ;
         
       } else {
         return false ;
       }
-    } 
+    },
+    
+    activate: function() {
+      $('.pc.active').removeClass('active') ;
+      return $(this).each(function(){
+        $(this).addClass('active') ;
+      }) ;
+    }
+    
   } ;
   
   

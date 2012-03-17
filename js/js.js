@@ -6,6 +6,14 @@ $(document).ready(function(){
   $('.pc').gamePiece({attackRadius:5}) ;  
   $('.hex').gameSpace() ; 
   
+  $('.hex').click(function(){
+    var clickSpc = $(this).gameSpace('getGridSpace') ;
+    var pcSpc = $('.pc.active').gamePiece('getGridSpace') ;
+    var angle = hexGrid.getAngle(pcSpc,clickSpc) ;
+    console.log(angle) ;
+    $(this).gameSpace('getLOShex') ;
+  }) ;
+  
 }) ;
 
 

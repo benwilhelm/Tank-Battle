@@ -21,7 +21,7 @@ hexGrid = {
       var spc = {} ;
       var c = parseInt($(obj).attr('data-col')) ;
       var r = parseInt($(obj).attr('data-row')) ;
-      var trn = parseInt($(obj).attr('data-terrain')) ;
+      var elev = parseInt($(obj).attr('data-elevation')) ;
       var occ = $(obj).find('.pc').not('.active').length ;
       var xy = that.getXY(c,r) ;
       var x = xy[0] ;
@@ -30,7 +30,7 @@ hexGrid = {
       grid[x][y] = {
         posHex: {col:c,row:r},
         posXY: {'x':x,'y':y},
-        cost:trn,
+        elevation:elev,
         
         f:0,
         g:0,
@@ -151,8 +151,8 @@ hexGrid = {
   getNeighbors: function() {
     var args = arguments ;
     if (typeof args[0] == 'object') {
-      var c = args[0][0] || args[0].col ;
-      var r = args[0][1] || args[0].row ;
+      var c = args[0][0] || args[0].col || args[0].posHex.col ;
+      var r = args[0][1] || args[0].row || args[0].posHex.row ;
     } else {
       var c = args[0] ;
       var r = args[1] ;
@@ -195,10 +195,10 @@ hexGrid = {
   },
   
   getDistance: function(pos1,pos2) {
-    var c1 = pos1.col || pos1[0] ;
-    var r1 = pos1.row || pos1[1] ;
-    var c2 = pos2.col || pos2[0] ;
-    var r2 = pos2.row || pos2[1] ;
+    var c1 = pos1.col || pos1.posHex.col || pos1[0] ;
+    var r1 = pos1.row || pos1.posHex.row || pos1[1] ;
+    var c2 = pos2.col || pos2.posHex.col || pos2[0] ;
+    var r2 = pos2.row || pos2.posHex.row || pos2[1] ;
     
     var row_dist = Math.abs(r1 - r2) ;
     var col_dist = Math.abs(c1 - c2) ;
@@ -214,6 +214,48 @@ hexGrid = {
     cr2 = that.getCR(pos2) ;
     
     var ret = that.getDistance(cr1,cr2) ;
+    return ret ;
+  },
+  
+  getAngle: function(pos1,pos2) {
+    //console.log("===") ;
+    var c1 = pos1.col || pos1.posHex.col || pos1[0] ;
+    var r1 = pos1.row || pos1.posHex.row || pos1[1] ;
+    var c2 = pos2.col || pos2.posHex.col || pos2[0] ;
+    var r2 = pos2.row || pos2.posHex.row || pos2[1] ;
+    
+    const mult = 22/38 ;
+    
+    var cdiff = c2 - c1 ;
+    //console.log("CDiff: " + cdiff) ;
+    var rdiff = r2 - r1 ;
+    //console.log("RDiff: " + rdiff) ;
+    var rdiffSq = rdiff * mult ;
+    var tan = rdiffSq/cdiff ;
+    var angle = Math.atan(tan) ;
+    angle = angle * (180/3.14159) ;
+    angle = Math.round(angle) ;
+    //console.log("Tangential Angle: " + angle) ;
+    
+    if (cdiff < 0 && rdiff >= 0) {
+      angle = 180 + angle ;
+    }
+    
+    if (rdiff < 0 && cdiff < 0 ) {
+      angle = -(180 - angle) ;
+    }
+    
+    //console.log("Returned Angle: " + angle) ;
+    return angle ;
+  },
+  
+  getAngleXY: function(pos1,pos2) {
+    var that = this ;
+    
+    cr1 = that.getCR(pos1) ;
+    cr2 = that.getCR(pos2) ;
+    
+    var ret = that.getAngle(cr1,cr2) ;
     return ret ;
   },
   
@@ -236,10 +278,31 @@ hexGrid = {
     }
   },
   
+  getGridSpaceCR: function() {
+    var args = arguments ;
+    if (typeof args[0] == 'object') {
+      var c = args[0][0] ;
+      var r = args[0][1] ;
+    } else {
+      var c = args[0] ;
+      var r = args[1] ;
+    }
+  
+    var xy = this.getXY(c,r) ;
+    return this.getGridSpace(xy) ;
+  } ,
+  
+  getJQSpace: function(spc) {
+    var c = spc.posHex.col ;
+    var r = spc.posHex.row ;
+    var sel = "#hex_" + c + '_' + r ;
+    return $(sel) ;
+  } ,
+  
   astar: function(cr1,cr2) {
     this.initGrid() ;
-    var xy1 = this.getXY(cr1) ;
-    var xy2 = this.getXY(cr2) ;
+    var xy1 = this.getXY(cr1.posHex.col, cr1.posHex.row) ;
+    var xy2 = this.getXY(cr2.posHex.col, cr2.posHex.row) ;
     var start = this.getGridSpace(xy1) ;
     var end = this.getGridSpace(xy2) ;
     
@@ -262,7 +325,7 @@ hexGrid = {
 				var curr = currentNode;
 				var ret = [];
 				while(curr.parent) {
-				  this.lastmove += curr.cost ;
+				  this.lastmove += curr.elevation ;
 					ret.push(curr);
 					curr = curr.parent;
 				}
@@ -285,7 +348,7 @@ hexGrid = {
  
 				// g score is the shortest distance from start to current node, we need to check if
 				//	 the path we have arrived at this neighbor is the shortest one we have seen yet
-				var gScore = currentNode.g + currentNode.cost; // 1 is the distance from a node to it's neighbor
+				var gScore = currentNode.g + currentNode.elevation; // 1 is the distance from a node to it's neighbor
 				//console.log(neighbor.posHex.col + '/' + neighbor.posHex.row + " G Score: " + gScore) ;
 				var gScoreIsBest = false;
  
@@ -295,7 +358,7 @@ hexGrid = {
 					// Also, we need to take the h (heuristic) score since we haven't done so yet
  
 					gScoreIsBest = true;
-					neighbor.h = hexGrid.getDistanceXY(neighbor.posXY, end.posXY) + neighbor.cost;
+					neighbor.h = hexGrid.getDistanceXY(neighbor.posXY, end.posXY) + neighbor.elevation;
 					openList.push(neighbor);
 				}
 				else if(gScore < neighbor.g) {
@@ -320,6 +383,7 @@ hexGrid = {
 	}, 
 	
 	highlightPath: function(path) {
+    $('.hex').removeClass('highlight') ;
     for (i=0;i<path.length;i++) {
       var hx = path[i] ;
       var c = hx.posHex.col ;
@@ -327,6 +391,13 @@ hexGrid = {
       var sel = "#hex_" + c + '_' + r ;
       $(sel).addClass('highlight') ;
     }	
-	}
-  
+	},
+	
+	highlightSpace: function(spc) {
+    $('.hex').removeClass('highlight') ;
+    var c = spc.posHex.col ;
+    var r = spc.posHex.row ;
+    var sel = "#hex_" + c + '_' + r ;
+    $(sel).addClass('highlight') ;
+	}  
 }

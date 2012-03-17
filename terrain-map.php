@@ -1,6 +1,6 @@
 <?php
 
-$terrainMap = array(
+$elevationMap = array(
   array(    4,    1,    1,    1,    1,    1,    1,    1,    1,    1   ) ,
   array( 4,    1,    1,    1,    1,    1,    1,    1,    1,    1   ) ,
   array(    1,    1,    1,    1,    1,    1,    1,    1,    1,    1   ) ,
