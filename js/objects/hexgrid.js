@@ -428,6 +428,21 @@ hexGrid = {
     return favorite ;
   },
   
+  checkLOS: function(start,end) {
+    path = hexGrid.getDirectPath(start,end) ;
+    hexGrid.highlightPath(path) ;
+    var i=1, spc, los=true;
+    var losSlope = (end.elevation - start.elevation) / (path.length - 1) ;
+    console.log("losSlope: " + losSlope) ;
+    while ((spc=path[i++])) {
+      var ptSlope = (spc.elevation - start.elevation) / (i - 1) ;
+      if (ptSlope > losSlope) {
+        los = false ;
+      }
+    }
+    
+    return los ;
+  },
 	
 	highlightPath: function(path) {
     $('.hex').removeClass('highlight') ;

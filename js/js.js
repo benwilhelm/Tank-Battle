@@ -7,7 +7,10 @@ $(document).ready(function(){
   $('.hex').gameSpace() ; 
   
   $('.hex').click(function(){
-    $(this).gameSpace('getDirectPath') ;
+    var activeSpace = $('.pc.active').closest('.hex').gameSpace('getGridSpace') ;
+    var thisSpace = $(this).gameSpace('getGridSpace') ;
+    var los = hexGrid.checkLOS(thisSpace,activeSpace) ;
+    console.log(los) ;
   }) ;
   
 }) ;
