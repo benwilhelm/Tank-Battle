@@ -249,6 +249,14 @@ hexGrid = {
     return angle ;
   },
   
+  diffAngles: function(ang1,ang2) {
+    diff = Math.abs(ang1 - ang2) ;
+    if (diff > 180) {
+      diff = 360 - diff ;
+    }
+    return diff ;
+  },
+  
   getAngleXY: function(pos1,pos2) {
     var that = this ;
     
@@ -292,11 +300,11 @@ hexGrid = {
     return this.getGridSpace(xy) ;
   } ,
   
-  getJQSpace: function(spc) {
+  getSelector: function(spc) {
     var c = spc.posHex.col ;
     var r = spc.posHex.row ;
     var sel = "#hex_" + c + '_' + r ;
-    return $(sel) ;
+    return sel ;
   } ,
   
   astar: function(cr1,cr2) {

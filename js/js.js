@@ -6,6 +6,10 @@ $(document).ready(function(){
   $('.pc').gamePiece({attackRadius:5}) ;  
   $('.hex').gameSpace() ; 
   
+  $('.hex').click(function(){
+    $(this).gameSpace('getDirectPath') ;
+  }) ;
+  
 }) ;
 
 

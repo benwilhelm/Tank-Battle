@@ -33,7 +33,7 @@
               } else {
                 // not enough points to move, return to original space
                 var str = "#hex_" + start.posHex.col + '_' + start.posHex.row + ' .rect' ;
-                console.log(str) ;
+                //console.log(str) ;
                 $(str).append(this) ;
               }        
             }      
@@ -103,7 +103,7 @@
         
         var xy = hexGrid.getXY(c,r) ;
         var space = hexGrid.getGridSpace(xy) ;
-        console.log(space) ;
+        //console.log(space) ;
         return space ;
         
       } else {
