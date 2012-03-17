@@ -34,57 +34,9 @@
     
     getDirectPath: function(pcSpace) {
       var pcSpace = pcSpace ? pcSpace : $('.pc.active').gamePiece('getGridSpace') ;      
-      var wkgSpace = pcSpace ;
       var thisSpace = $(this).gameSpace('getGridSpace') ;
-      var angle;
-      var $wkgSpace
-      var path = [] ;
-      
-      var ii = 0 ;
-      while (wkgSpace != thisSpace && ii < 30) {
-        angle = hexGrid.getAngle(wkgSpace,thisSpace) ;
-        $wkgSpace = $(hexGrid.getSelector(wkgSpace)) ;
-        wkgSpace = $wkgSpace.gameSpace('getNextByAnchor',pcSpace,thisSpace) ; 
-        path.push(wkgSpace) ;
-        ii++ ;
-      }
-      hexGrid.highlightPath(path) ;
+      return hexGrid.getDirectPath(pcSpace,thisSpace) ;
     },
-    
-    getNextByAngle: function(angle) {
-      var thisSpace = $(this).gameSpace('getGridSpace') ;
-      var nbrs = hexGrid.getNeighbors(thisSpace) ;
-      var i=0, nbr, nextSpc, diff=180, nbrAngle, ancAngle, wkgDiff, ancDiff, favorite ;
-      while(nbr = nbrs[i++]) {
-        nbrAngle = hexGrid.getAngle(thisSpace,nbr) ;
-        wkgDiff = Math.abs(angle - nbrAngle) ;
-        if (wkgDiff < diff) {
-          favorite = nbr ;
-          diff = wkgDiff ;
-        }
-      }
-      return favorite ;
-    },
-    
-    getNextByAnchor: function(start,end) {
-      var thisSpace = $(this).gameSpace('getGridSpace') ;
-      var nbrs = hexGrid.getNeighbors(thisSpace) ;
-      var i=0, nbr, nextSpc, diff=180, nbrAngle, ancAngle, wkgDiff, ancDiff, favorite ;
-      var refAngle = hexGrid.getAngle(start,end) ;
-      while (nbr = nbrs[i++]) {        
-        ancAngle = hexGrid.getAngle(start,nbr) ;
-        nbrAngle = hexGrid.getAngle(thisSpace,nbr) ;
-        wkgDiff = hexGrid.diffAngles(refAngle,nbrAngle) ;
-        if (wkgDiff < 90) {
-          ancDiff = hexGrid.diffAngles(refAngle,ancAngle) ;
-          if (ancDiff < diff) {
-            favorite = nbr ;
-            diff = ancDiff ;
-          }
-        }
-      }
-      return favorite ;
-    }
     
   } ;
   

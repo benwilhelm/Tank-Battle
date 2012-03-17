@@ -392,7 +392,42 @@ hexGrid = {
  
 		// No result was found -- empty array signifies failure to find path
 		return [];
-	}, 
+	},
+	
+  getDirectPath: function(startSpace,endSpace) {
+    var wkgSpace = startSpace ;
+    var angle;
+    var path = [startSpace] ;
+    
+    var ii = 0 ;
+    while (wkgSpace != endSpace && ii < 30) {
+      angle = hexGrid.getAngle(wkgSpace,endSpace) ;
+      wkgSpace = hexGrid.getNextByAnchor(startSpace,endSpace,wkgSpace) ; 
+      path.push(wkgSpace) ;
+      ii++ ;
+    }
+    return path ;
+  },
+  
+  getNextByAnchor: function(start,end,thisSpace) {
+    var nbrs = hexGrid.getNeighbors(thisSpace) ;
+    var i=0, nbr, nextSpc, diff=180, nbrAngle, ancAngle, wkgDiff, ancDiff, favorite ;
+    var refAngle = hexGrid.getAngle(start,end) ;
+    while (nbr = nbrs[i++]) {        
+      ancAngle = hexGrid.getAngle(start,nbr) ;
+      nbrAngle = hexGrid.getAngle(thisSpace,nbr) ;
+      wkgDiff = hexGrid.diffAngles(refAngle,nbrAngle) ;
+      if (wkgDiff < 90) {
+        ancDiff = hexGrid.diffAngles(refAngle,ancAngle) ;
+        if (ancDiff < diff) {
+          favorite = nbr ;
+          diff = ancDiff ;
+        }
+      }
+    }
+    return favorite ;
+  },
+  
 	
 	highlightPath: function(path) {
     $('.hex').removeClass('highlight') ;
