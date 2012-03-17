@@ -195,10 +195,10 @@ hexGrid = {
   },
   
   getDistance: function(pos1,pos2) {
-    var c1 = pos1.col || pos1.posHex.col || pos1[0] ;
-    var r1 = pos1.row || pos1.posHex.row || pos1[1] ;
-    var c2 = pos2.col || pos2.posHex.col || pos2[0] ;
-    var r2 = pos2.row || pos2.posHex.row || pos2[1] ;
+    var c1 = pos1.col || pos1[0] || pos1.posHex.col ;
+    var r1 = pos1.row || pos1[1] || pos1.posHex.row ;
+    var c2 = pos2.col || pos2[0] || pos2.posHex.col ;
+    var r2 = pos2.row || pos2[1] || pos2.posHex.row ;
     
     var row_dist = Math.abs(r1 - r2) ;
     var col_dist = Math.abs(c1 - c2) ;
@@ -325,7 +325,7 @@ hexGrid = {
 				var curr = currentNode;
 				var ret = [];
 				while(curr.parent) {
-				  this.lastmove += curr.elevation ;
+				  this.lastmove += curr.expense ;
 					ret.push(curr);
 					curr = curr.parent;
 				}
@@ -339,7 +339,8 @@ hexGrid = {
  
 			for(var i=0; i<neighbors.length;i++) {
 				var neighbor = neighbors[i];
-				if(closedList.indexOf(neighbor) >=0 || neighbor.occupied) {
+				var elChange = Math.abs(neighbor.elevation - currentNode.elevation) ;
+				if(closedList.indexOf(neighbor) >=0 || neighbor.occupied || elChange > 1) {
 				  //console.log('closed') ;
 					// not a valid node to process, skip to next neighbor
 					continue;
@@ -348,7 +349,10 @@ hexGrid = {
  
 				// g score is the shortest distance from start to current node, we need to check if
 				//	 the path we have arrived at this neighbor is the shortest one we have seen yet
-				var gScore = currentNode.g + currentNode.elevation; // 1 is the distance from a node to it's neighbor
+				var climb = neighbor.elevation - currentNode.elevation ;
+				climb = climb <= 0 ? 0 : climb ;
+				neighbor.expense = climb + 1 ;
+				var gScore = currentNode.g + neighbor.expense; // 1 is the distance from a node to its neighbor
 				//console.log(neighbor.posHex.col + '/' + neighbor.posHex.row + " G Score: " + gScore) ;
 				var gScoreIsBest = false;
  

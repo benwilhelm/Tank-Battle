@@ -32,7 +32,8 @@
                 turn.updateDisplay() ;
               } else {
                 // not enough points to move, return to original space
-                var str = "#hex_" + start.col + '_' + start.row + ' .rect' ;
+                var str = "#hex_" + start.posHex.col + '_' + start.posHex.row + ' .rect' ;
+                console.log(str) ;
                 $(str).append(this) ;
               }        
             }      
@@ -100,7 +101,9 @@
         var c = parseInt(c) ;
         var r = parseInt(r) ;
         
-        var space = hexGrid.getGridSpace(hexGrid.getXY(c,r)) ;
+        var xy = hexGrid.getXY(c,r) ;
+        var space = hexGrid.getGridSpace(xy) ;
+        console.log(space) ;
         return space ;
         
       } else {
