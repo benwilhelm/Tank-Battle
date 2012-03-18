@@ -47,49 +47,18 @@
       }) ;
     }, 
     
-    showAttackRadius: function(radius) {
-      var dist = radius ;
-      $('.can-move').removeClass('can-move') ;
-      
-      return this.each(function(){
-        var $this = $(this) ;
-        
-        //var dist = parseInt($this.attackRadius) ;
-        //var dist = 10 ;
-        var my_col = parseInt($this.closest('.hex').attr('data-col')) ;
-        var my_row = parseInt($this.closest('.hex').attr('data-row')) ;
-        
-        if ( my_row ) {
-          var r ;
-          var c ;
-          var sel = Array() ;
-          for (r=-(dist*2); r<=dist*2; r++) {
-            var the_row = my_row + r ;
-            var rabs = Math.abs(r) ;
-            for (c=-(dist); c<=dist; c++) {
-              var the_col = my_col + c ;
-              var cabs = Math.abs(c) ;
-              
-              if ( rabs >= cabs ) {
-                if ((rabs+cabs)/2 <= dist) {
-                  sel.push("#hex_" + the_col + "_" + the_row) ;
-                } 
-              } else {
-                if (rabs <= dist) {
-                  sel.push("#hex_" + the_col + "_" + the_row) ;
-                }
-              }
-            }
-          }
-          var selector = sel.join(',') ;
-          $(selector).addClass('show-attack')
-                     .delay(1000).queue(function(next){
-                        $(this).removeClass('show-attack') ;
-                        next() ;
-                      }) ;
-        }
-      }) ;
+    getAttackRadius: function() {
+      var spc = $(this).gamePiece('getGridSpace') ;
+      var radius = $(this).data('attackRadius') ;
+      var spcSet = hexGrid.getRadius(spc,radius) ;
+      return spcSet ;
+    },
     
+    getAttackableSpaces: function() {
+      var radius = $(this).gamePiece('getAttackRadius') ;
+      var fov = $(this).gamePiece('getFOV') ;
+      var ret = hexGrid.intersectSets(radius,fov) ;
+      return ret ;
     },
     
     getGridSpace: function() {
@@ -116,6 +85,13 @@
       return $(this).each(function(){
         $(this).addClass('active') ;
       }) ;
+    } ,
+    
+    getFOV: function() {
+      var mySpace = $(this).gamePiece('getGridSpace') ;
+      var radius = $(this).data('attackRadius') ;
+      var fov = hexGrid.getFOV(mySpace,radius) ;
+      return fov ;
     }
     
   } ;

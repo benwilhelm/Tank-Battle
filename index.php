@@ -12,6 +12,7 @@
     
     <script type="text/javascript" src='js/jquery-1.7.1.min.js' ></script>
     <script type="text/javascript" src='js/jquery-ui-1.8.17.custom.min.js' ></script>
+    <script type="text/javascript" src='js/functions.js' ></script>
     <script type="text/javascript" src='js/objects/hexgrid.js' ></script>
     <script type="text/javascript" src='js/objects/turn.js' ></script>
     <script type="text/javascript" src='js/plugins/gamepiece.js' ></script>
@@ -59,11 +60,14 @@
     </div><!-- #game_board -->
           
     <div id="info_pane">
+      <p id="player_notice">&nbsp;</p>
       <p id="points_remaining">Points Remaining: <span></span></p>
       <p id="points_used">Points Used: <span></span></p>
       
-      <p id="tank_starts"></p>
-      <p id="tank_lands"></p>
+      <div id="actions">
+        <p><a id='action_check_fov' href="#">Check FOV</a></p>
+        <p><a id='action_show_attack_radius' href="#">Show Attack Radius</a></p>
+      </div>
     </div>
 	
   </body>

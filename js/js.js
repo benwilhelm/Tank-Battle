@@ -6,13 +6,36 @@ $(document).ready(function(){
   $('.pc').gamePiece({attackRadius:5}) ;  
   $('.hex').gameSpace() ; 
   
-  $('.hex').click(function(){
-    var activeSpace = $('.pc.active').closest('.hex').gameSpace('getGridSpace') ;
-    var thisSpace = $(this).gameSpace('getGridSpace') ;
-    var los = hexGrid.checkLOS(thisSpace,activeSpace) ;
-    console.log(los) ;
+  $('#action_check_fov').click(function(e){
+    e.preventDefault() ;
+    var activeSpc = $('.pc.active').gamePiece('getGridSpace') ;
+    if (activeSpc) {
+      var fov = hexGrid.getFOV(activeSpc) ;
+      hexGrid.highlightPath(fov) ;
+    } else {
+      turn.notice("No Piece Selected") ;
+    }
+  }) ; 
+  
+  $('#action_show_attack_radius').click(function(e){
+    e.preventDefault() ;
+    var $activePc = $('.pc.active') ;
+    if ($activePc.length) {
+      var set = $activePc.gamePiece('getAttackableSpaces') ;
+      turn.notice("Showing Attackable Spaces") ;
+      hexGrid.highlightPath(set) ;
+    } else {
+      turn.notice("No Piece Selected") ;
+    }
   }) ;
   
+  $('.hex').click(function(e){
+    e.preventDefault() ;
+    var activeSpc = $('.pc.active').gamePiece('getGridSpace') ;
+    if (activeSpc) {
+      var los = hexGrid.checkLOS(activeSpc,$(this).gameSpace('getGridSpace')) ;
+    }
+  }) ;
 }) ;
 
 

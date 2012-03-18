@@ -36,8 +36,8 @@
       var pcSpace = pcSpace ? pcSpace : $('.pc.active').gamePiece('getGridSpace') ;      
       var thisSpace = $(this).gameSpace('getGridSpace') ;
       return hexGrid.getDirectPath(pcSpace,thisSpace) ;
-    },
-    
+    }
+        
   } ;
   
   

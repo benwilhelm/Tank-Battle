@@ -19,5 +19,12 @@ turn = {
   updateDisplay: function() {
     $('#points_remaining span').html(this.pointsRemaining) ;
     $('#points_used span').html(this.pointsLastUsed) ;
+  },
+  
+  notice: function(str) {
+    $("#player_notice").html(str) 
+    setTimeout(function(){
+      $("#player_notice").html("&nbsp;") ;
+    }, 3000) ;
   }
 }

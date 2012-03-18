@@ -38,7 +38,8 @@ hexGrid = {
         parent:null,
         open:false,
         closed:false,
-        occupied: occ
+        occupied: occ,
+        id: "hex_" + c + "_" + r 
       } ; 
     }) ;
 
@@ -218,24 +219,20 @@ hexGrid = {
   },
   
   getAngle: function(pos1,pos2) {
-    //console.log("===") ;
-    var c1 = pos1.col || pos1.posHex.col || pos1[0] ;
-    var r1 = pos1.row || pos1.posHex.row || pos1[1] ;
-    var c2 = pos2.col || pos2.posHex.col || pos2[0] ;
-    var r2 = pos2.row || pos2.posHex.row || pos2[1] ;
+    var c1 = pos1.col || pos1[0] || pos1.posHex.col ;
+    var r1 = pos1.row || pos1[1] || pos1.posHex.row ;
+    var c2 = pos2.col || pos2[0] || pos2.posHex.col ;
+    var r2 = pos2.row || pos2[1] || pos2.posHex.row ;
     
     const mult = 22/38 ;
     
     var cdiff = c2 - c1 ;
-    //console.log("CDiff: " + cdiff) ;
     var rdiff = r2 - r1 ;
-    //console.log("RDiff: " + rdiff) ;
     var rdiffSq = rdiff * mult ;
     var tan = rdiffSq/cdiff ;
     var angle = Math.atan(tan) ;
     angle = angle * (180/3.14159) ;
     angle = Math.round(angle) ;
-    //console.log("Tangential Angle: " + angle) ;
     
     if (cdiff < 0 && rdiff >= 0) {
       angle = 180 + angle ;
@@ -245,7 +242,6 @@ hexGrid = {
       angle = -(180 - angle) ;
     }
     
-    //console.log("Returned Angle: " + angle) ;
     return angle ;
   },
   
@@ -349,7 +345,6 @@ hexGrid = {
 				var neighbor = neighbors[i];
 				var elChange = Math.abs(neighbor.elevation - currentNode.elevation) ;
 				if(closedList.indexOf(neighbor) >=0 || neighbor.occupied || elChange > 1) {
-				  //console.log('closed') ;
 					// not a valid node to process, skip to next neighbor
 					continue;
 				}
@@ -361,7 +356,6 @@ hexGrid = {
 				climb = climb <= 0 ? 0 : climb ;
 				neighbor.expense = climb + 1 ;
 				var gScore = currentNode.g + neighbor.expense; // 1 is the distance from a node to its neighbor
-				//console.log(neighbor.posHex.col + '/' + neighbor.posHex.row + " G Score: " + gScore) ;
 				var gScoreIsBest = false;
  
  
@@ -395,13 +389,18 @@ hexGrid = {
 	},
 	
   getDirectPath: function(startSpace,endSpace) {
+    //console.log("Get Direct Path") ;
+    //console.log(startSpace) ;
+    //console.log(endSpace) ;
     var wkgSpace = startSpace ;
     var angle;
     var path = [startSpace] ;
     
     var ii = 0 ;
-    while (wkgSpace != endSpace && ii < 30) {
-      angle = hexGrid.getAngle(wkgSpace,endSpace) ;
+    while (wkgSpace && (wkgSpace != endSpace) && (ii < 30)) {
+      //console.log("While") ;
+      //console.log(wkgSpace) ;
+      angle = hexGrid.getAngle(wkgSpace,endSpace,true) ;
       wkgSpace = hexGrid.getNextByAnchor(startSpace,endSpace,wkgSpace) ; 
       path.push(wkgSpace) ;
       ii++ ;
@@ -429,11 +428,12 @@ hexGrid = {
   },
   
   checkLOS: function(start,end) {
+    //console.log("Check LOS=========") ;
+    //console.log(start);
+    //console.log(end) ;
     path = hexGrid.getDirectPath(start,end) ;
-    hexGrid.highlightPath(path) ;
     var i=1, spc, los=true;
     var losSlope = (end.elevation - start.elevation) / (path.length - 1) ;
-    console.log("losSlope: " + losSlope) ;
     while ((spc=path[i++])) {
       var ptSlope = (spc.elevation - start.elevation) / (i - 1) ;
       if (ptSlope > losSlope) {
@@ -442,6 +442,47 @@ hexGrid = {
     }
     
     return los ;
+  },
+  
+  getFOV: function(spc) {
+    var canSee = [] ;
+    
+    $('.hex').each( function(idx,obj) {
+      var wkg = $(obj).gameSpace('getGridSpace') ;
+      if (hexGrid.checkLOS(spc,wkg)) {
+        canSee.push(wkg) ;
+      }
+    }) ;
+    return canSee ;
+  },
+  
+  getRadius: function(spc,radius) {
+    var ret = [] ;
+    
+    $('.hex').each(function(idx,obj){
+      var wkg = $(obj).gameSpace('getGridSpace') ;
+      if (hexGrid.getDistance(wkg,spc) <= radius) {
+        ret.push(wkg) ;
+      }
+    }) ;    
+    
+    return ret ;
+  },
+  
+  intersectSets: function(arr1,arr2) {
+    var r = [], o = {}, l = arr2.length, i, v, spc ;
+    for (i = 0; i < l; i++) {
+        o[arr2[i].id] = true;
+    }
+    l = arr1.length;
+    for (i = 0; i < l; i++) {
+        v = arr1[i].id ;
+        spc = arr1[i] ;
+        if (v in o) {
+            r.push(spc);
+        }
+    }
+    return r;
   },
 	
 	highlightPath: function(path) {
